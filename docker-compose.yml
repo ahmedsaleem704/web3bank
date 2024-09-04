@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  server:
+    build:
+      context: ./backend
+      dockerfile: ../deploy/backend.Dockerfile
+    image: web3bank-server
+    container_name: web3bank-server-cntr
+    command: yarn start
+    ports:
+      - "5000:5000"
+    env_file: ./backend/.env
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+  client:
+    build:
+      context: ./dapp
+      dockerfile: ../deploy/dapp.Dockerfile
+    image: web3bank-client
+    container_name: web3bank-client-cntr
+    command: yarn start
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+      - "8545:8545"
+    environment:
+      - API_HOST=http://server:5000
+    networks:
+      - app-network
+
+networks:
+    app-network:
+        driver: bridge
+
+volumes:
+    web-root:
+      driver: local

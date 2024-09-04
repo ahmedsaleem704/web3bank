@@ -1,0 +1,37 @@
+extends:
+    - eslint:recommended
+
+parserOptions:
+    sourceType: module
+    ecmaVersion: latest
+env:
+    es2021: true
+    browser: true
+    node: true
+
+rules:
+    multiline-comment-style: [error, separate-lines]
+    no-undef:
+        - error
+        - typeof: true
+    no-unused-vars:
+        - warn
+        - args: after-used # prefix unused args with "_" or "ignored" ("_arg" or "ignoredArg")
+          caughtErrors: all # catch (err) must use err
+          ignoreRestSiblings: true
+          caughtErrorsIgnorePattern: ^ignored(?:Error|Exception)$
+          argsIgnorePattern: ^(?:_|ignored[A-Z])
+          varsIgnorePattern: ^(?:_|ignored[A-Z])
+    no-use-before-define: warn
+    no-multi-spaces:
+      - warn
+      - exceptions:
+          ImportDeclaration: true
+    # Prevent double callback, next, and similar calls.
+    callback-return:
+        - error
+        - [callback, cb, next, done]
+    strict: [error, safe]
+    no-console:
+        - error
+        - allow: [warn, error, info]
